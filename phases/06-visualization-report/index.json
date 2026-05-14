@@ -1,0 +1,11 @@
+{
+  "phase": "06-visualization-report",
+  "goal": "발표/보고서용 figure 4종을 결정판으로 만들고, 보고서를 작성한다.",
+  "steps": [
+    {"id": "step1", "title": "Figure 1 — 정책별 cumulative regret 곡선 (클러스터별 facet)", "status": "pending"},
+    {"id": "step2", "title": "Figure 2 — 페르소나 × 정책 승률 히트맵", "status": "pending"},
+    {"id": "step3", "title": "Figure 3 — arm pull 시간 경과 (stacked area)", "status": "pending"},
+    {"id": "step4", "title": "Figure 4 — 페르소나 클러스터 분포 산점도", "status": "pending"},
+    {"id": "step5", "title": "발표 슬라이드 outline + 보고서 초안", "status": "pending"}
+  ]
+}

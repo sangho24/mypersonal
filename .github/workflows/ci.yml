@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Set up Python 3.12
+        run: uv python install 3.12
+
+      - name: Sync dependencies
+        run: uv sync --frozen
+
+      # --- 정적 검사 / 린트 ---
+      - name: Ruff lint
+        run: uv run ruff check .
+
+      - name: Ruff format check
+        run: uv run ruff format --check .
+
+      - name: Pyright type check
+        run: uv run pyright
+
+      # --- L1: 모든 .py syntax-clean ---
+      - name: L1 — py_compile
+        run: uv run python -m py_compile $(git ls-files '*.py')
+
+      # --- L2: 모든 패키지 임포트 가능 ---
+      - name: L2 — module imports
+        run: uv run python -c "import src.scraping, src.personas, src.mab, src.simulation, src.viz"
+
+      # --- 단위 테스트 + 데이터 검증 로직 테스트 ---
+      # (data/raw 는 gitignore — 실제 수집 데이터 게이트는 로컬에서 동작, CI 에선 자동 skip)
+      - name: Pytest
+        run: uv run pytest -q

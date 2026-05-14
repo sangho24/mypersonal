@@ -1,0 +1,35 @@
+﻿<!-- 메이커스노트 -->
+<div class='board-top'>
+    <h2 class='cate-tit'><p class='line-point'>메이커스노트</p></h2>
+</div><!--.board-top --><div class='board-list board-list-makers'>
+<div class='makers-item'>
+    <div class='makers-item-pp'>
+        <p><a href='javascript:goStoreViewDirect(137)'><img src='https://wine21.speedgabia.com/COMPANY_MST/LOGO/0000137.jpg' alt='씨에스알와인' class='img-logo'></a></p>
+        <dl>
+            <dt><a href='javascript:goStoreViewDirect(137)'>씨에스알와인</a></dt>
+            <dd>2021.09.02</dd>
+        </dl>
+    </div>
+    <div class='makers-item-tt'>
+        <p class='makers-item-tit'>2017 빈티지  / 36,000원 (750ml)</p>
+        <div class='makers-item-txt'>짙은 루비색에 블루베리, 자두, 카시스, 꽃향, 오크 풍미가 느껴진다. 입 안에서는 부드러운 타닌과 묵직한 질감, 다채로운 과실과 오크 풍미가 매력적인 와인이다.</div>
+    </div>
+</div><!--.makers-item --></div><!--.board-list -->
+<!-- 메이커스노트 -->
+
+<script type="text/javascript">
+//<![CDATA[
+$(document).ready(function() {
+    // $(".TastingNoteCNT").html('(' + '1' + ')');
+
+    makernote_count = '1';
+    sumMakernoteTastingnoteSum();
+
+    $('.same-tasting-note-more1').click(function(e){
+        $('.makersnote-list1').load('/13_search/proc/load_wine_view_makersnote_list1.php', {WineIdx:'169203', Year:'All',inPage:parseInt('1')+1});
+	});
+
+
+});
+//]]>
+</script>

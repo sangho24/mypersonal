@@ -1,0 +1,9 @@
+{
+  "phase": "04-reward-and-mab",
+  "goal": "Reward Function 구현 (핵심 기여 2) + MAB 정책 직접 구현 + sanity check.",
+  "steps": [
+    {"id": "step1", "title": "Reward Function 구현", "status": "pending"},
+    {"id": "step2", "title": "MAB 정책 — EpsilonGreedy, UCB1, Thompson Sampling 직접 구현", "status": "pending"},
+    {"id": "step3", "title": "정책 sanity check (toy bandit)", "status": "pending"}
+  ]
+}

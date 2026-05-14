@@ -1,0 +1,41 @@
+{
+  "project": "wine-mab-project",
+  "phases": [
+    {
+      "name": "01-scraping-setup",
+      "title": "wine21 스크래퍼 프로토타입",
+      "status": "completed",
+      "week": "1주 (5/13 ~ 5/19)"
+    },
+    {
+      "name": "02-data-collection",
+      "title": "본 수집 + Nemotron 페르소나 로딩",
+      "status": "pending",
+      "week": "2주 (5/20 ~ 5/26)"
+    },
+    {
+      "name": "03-persona-translation",
+      "title": "Persona Translation Layer (핵심 기여 1)",
+      "status": "pending",
+      "week": "3주 (5/27 ~ 6/2)"
+    },
+    {
+      "name": "04-reward-and-mab",
+      "title": "Reward Function + MAB 정책 (핵심 기여 2)",
+      "status": "pending",
+      "week": "3주 (5/27 ~ 6/2)"
+    },
+    {
+      "name": "05-simulation-analysis",
+      "title": "메인 시뮬레이션 실행 + 결과 분석",
+      "status": "pending",
+      "week": "4주 (6/3 ~ 6/8)"
+    },
+    {
+      "name": "06-visualization-report",
+      "title": "시각화 + 발표/보고서 산출물",
+      "status": "pending",
+      "week": "5~6주 (6/9 ~ 6/24)"
+    }
+  ]
+}

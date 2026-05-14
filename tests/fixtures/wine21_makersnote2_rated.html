@@ -1,0 +1,141 @@
+﻿<!-- 테이스팅노트 -->
+<div class='board-top pt50'>
+    <h2 class='cate-tit'><p class='line-point'>테이스팅노트</p></h2>
+</div><!--.board-top --><div class='board-list board-list-makers'>
+<div class='makers-item' id='makers-item12584' idx=12584>
+    <div class='makers-item-pp'>
+        <p><img src='https://wine21.speedgabia.com/profile-non-img-gray.png' alt='haansol'></p>
+        <dl>
+            <dt>haansol</dt>
+            <dd>2022.06.29</dd>
+        </dl>
+    </div>
+    <div class='makers-item-tt'>
+        <div class='makers-item-tit'>NA 빈티지
+            <p class='dib tasting-note'><span class='score-star'><span class='star-rating'><em style='width:100%'></em></span>5.0</span> </p>    </div>
+
+        <!-- 보기 시 -->
+        <div class='makers-item-txt' id='viewIdx12584' idx=12584></div>
+
+        <!-- 수정 시 textarea -->
+        <div class='makers-item-txt' id='editIdx12584' idx=12584 style='display:none;'>
+            <div class='mod-textarea'>
+                <textarea id='textareaIdx12584' idx=12584></textarea>
+                <div class='btn-mod-textarea'><select id='openYN12584' class='note-open'><option value='Y' selected>공개</option><option value='N'>비공개</option></select><button class='mod-textarea-ok' type='button' idx=12584>수정</button></div>
+            </div><!-- .mod-textarea -->
+        </div>
+    </div>
+</div><!--.makers-item --></div><!--.board-list -->
+<!-- 테이스팅노트 -->
+
+<script type="text/javascript">
+//<![CDATA[
+$(document).ready(function() {
+    // $(".TastingNoteCNT").html('(' + '1' + ')');
+
+    tastingnote_count = '1';
+    sumMakernoteTastingnoteSum();
+
+    $('.same-tasting-note-more2').click(function(e){
+        $('.makersnote-list2').load('/13_search/proc/load_wine_view_makersnote_list2.php', {WineIdx:'169203', Year:'All',inPage:parseInt('1')+1});
+	});
+
+    $('.btnTasingModify').click(function(){
+        var Idx = $(this).attr('idx');
+
+        if ($('#viewIdx'+Idx).css('display') === 'block') {
+            $('#viewIdx'+Idx).hide();
+            $('#editIdx'+Idx).show();
+        }
+        else {
+            $('#viewIdx'+Idx).show();
+            $('#editIdx'+Idx).hide();
+        }
+    });
+
+    $('.btnTasingDelete').click(function(){
+        var Idx = $(this).attr('idx');
+        var sendData = {};
+        sendData.WINE_NOTE_IDX	    = Idx;
+
+        $.confirm({
+            title: '',
+            content: '삭제하시겠습니까?',
+            scrollToPreviousElement: false,
+            buttons: {
+                confirm: {
+                    text: '확 인',
+                    btnClass: 'btn-blue',
+                    action: function(){
+
+                        $.ajax({
+                            type: "POST", dataType:"html", async:"true", cache:"false", contentType:"application/x-www-form-urlencoded;charset=UTF-8",
+                            url: "/13_search/proc/proc_wine_tasting_deleteOK.php",
+                            data: sendData,
+                            failure : function(_response) { alert("error"); return false; },
+                            success: function (data) {
+                               if(data=="Y") {
+                                    // $('#makers-item'+Idx).hide();
+                                    window.location.reload(true);
+                                    return;
+                                } else {
+                                    alert("삭제 에러입니다. 관리자에게 문의하시기 바랍니다.");
+                                    return;
+                                }
+                            },
+                            error: function (e) {
+                                alert("삭제 에러입니다. 관리자에게 문의하시기 바랍니다.");
+                	            return;
+                            }
+                        });
+                    }
+                },
+                cancel: {
+                    text: '취 소'
+                }
+            }
+        });
+    });
+
+    $('.mod-textarea-ok').click(function(){
+        var Idx     = $(this).attr('idx');
+        var memo    = $('#textareaIdx'+Idx).val();
+        var openYN  = $('#openYN'+Idx).val();
+
+        if (memo.length > 500){
+            fnAlert("경고","최대 500자까지 입력 가능합니다.", $('#editIdx'+Idx));
+            $('#editIdx'+Idx).val(memo.substring(0, 500));
+        }
+
+        var sendData = {};
+        sendData.WINE_NOTE_IDX	    = Idx;
+        sendData.MEMB_IDX 			= $.cookie('USER_IDX');
+		sendData.MEMB_NICK 			= $.cookie('USER_NICK');
+		sendData.MEMB_PHONE 		= $.cookie('USER_PHONE');
+		sendData.MEMB_EMAIL 		= $.cookie('USER_EMAIL');
+        sendData.TASTE_MEMO			= memo;
+        sendData.TASTE_OPEN_YN		= openYN;
+
+        $.ajax({
+            type	: "POST", dataType:"html", async:"true", cache:"false", contentType:"application/x-www-form-urlencoded;charset=UTF-8",
+            url		: "/13_search/proc/proc_wine_tasting_modifyOK.php",
+            data	: sendData,
+            failure : function(_response) { alert("error"); return false; },
+            success	: function(data) {
+                if(data=="Y") {
+                    window.location.reload(true);
+                    // $('#viewIdx'+Idx).html(memo.replace(/(?:\r\n|\r|\n)/g, '<br />'));
+                    // $('#viewIdx'+Idx).show();
+                    // $('#editIdx'+Idx).hide();
+                    // return;
+                } else {
+                	alert("등록 에러입니다. 관리자에게 문의하시기 바랍니다.");
+                	return;
+                }
+            }
+        });
+    });
+
+});
+//]]>
+</script>

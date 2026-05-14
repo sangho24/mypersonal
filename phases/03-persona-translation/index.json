@@ -1,0 +1,10 @@
+{
+  "phase": "03-persona-translation",
+  "goal": "Nemotron 페르소나를 와인 도메인 선호 벡터(지역/품종 가중치, 가격 민감도, α)로 변환하는 매핑 레이어 구현. 핵심 기여 1.",
+  "steps": [
+    {"id": "step1", "title": "K-means 클러스터링 numpy 직접 구현", "status": "pending"},
+    {"id": "step2", "title": "방법 A — 클러스터 기반 선호 벡터 매핑", "status": "pending"},
+    {"id": "step3", "title": "방법 B — LLM 기반 개별 매핑 (선택 / 시간 여유 시)", "status": "pending"},
+    {"id": "step4", "title": "방법 선택 또는 비교 — ADR-002 갱신", "status": "pending"}
+  ]
+}

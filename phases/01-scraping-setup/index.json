@@ -1,0 +1,10 @@
+{
+  "phase": "01-scraping-setup",
+  "goal": "wine21.com 사이트 구조를 파악하고, 50병 정도를 시범 수집하여 데이터 스키마와 카테고리 후보를 확정한다.",
+  "steps": [
+    {"id": "step1", "title": "사이트 구조 정찰 및 스키마 정의", "status": "completed"},
+    {"id": "step2", "title": "단일 페이지 파서 구현", "status": "completed"},
+    {"id": "step3", "title": "리스트 페이지 → 상세 페이지 크롤 흐름 구현 (50병 sample)", "status": "completed"},
+    {"id": "step4", "title": "카테고리 후보 도출 및 ADR-001 검증", "status": "completed"}
+  ]
+}

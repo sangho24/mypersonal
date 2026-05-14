@@ -1,0 +1,10 @@
+{
+  "phase": "05-simulation-analysis",
+  "goal": "페르소나 × 정책 × 반복 시뮬레이션을 실행하고 분석 지표 4종을 계산.",
+  "steps": [
+    {"id": "step1", "title": "시뮬레이션 러너 구현 + quick run", "status": "pending"},
+    {"id": "step2", "title": "메인 시뮬레이션 (전체 페르소나 × 전체 정책 × N runs)", "status": "pending"},
+    {"id": "step3", "title": "지표 계산 및 결과 분석", "status": "pending"},
+    {"id": "step4", "title": "민감도 분석 (α, σ 변동)", "status": "pending"}
+  ]
+}

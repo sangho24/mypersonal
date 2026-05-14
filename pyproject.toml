@@ -1,0 +1,43 @@
+[project]
+name = "wine-mab-project"
+version = "0.1.0"
+description = "한국 와인 시장에서의 합리적 취향 탐색 전략 시뮬레이션 (빅데이터 컴퓨팅 기말 프로젝트)"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "requests>=2.31",
+    "beautifulsoup4>=4.12",
+    "lxml>=5.0",
+    "playwright>=1.40",
+    "numpy>=1.26",
+    "pandas>=2.1",
+    "matplotlib>=3.8",
+    "datasets>=2.16",
+    "huggingface-hub>=0.20",
+    "tqdm>=4.66",
+    "anthropic>=0.18",
+    "python-dotenv>=1.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "pyright>=1.1.350",
+    "ruff>=0.6",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.pyright]
+include = ["src", "tests"]
+pythonVersion = "3.12"
+typeCheckingMode = "basic"
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
