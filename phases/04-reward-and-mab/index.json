@@ -1,8 +1,10 @@
 {
   "phase": "04-reward-and-mab",
   "goal": "Reward Function 구현 (핵심 기여 2) + MAB 정책 직접 구현 + sanity check.",
+  "status": "in_progress",
+  "spine_note": "ADR-009 확정 — 발표 spine = mark-up(r=-0.752)→Akerlof(Champagne 2.82x)→MAB. reward = 1/mark-up_arm (실데이터 파라미터화), noise σ = X-Wines 국가별 평점 분산(pooled std 0.65/5.0 → σ≈0.02 on reward scale), arm = country × price_tier (ADR-008). regret은 KRW 환산(평균 와인가 ₩72K, T=200).",
   "steps": [
-    {"id": "step1", "title": "Reward Function 구현", "status": "pending"},
+    {"id": "step1", "title": "Reward Function 구현 (1/mark-up 베이스라인, ADR-009)", "status": "pending"},
     {"id": "step2", "title": "MAB 정책 — EpsilonGreedy, UCB1, Thompson Sampling 직접 구현", "status": "pending"},
     {"id": "step3", "title": "정책 sanity check (toy bandit)", "status": "pending"}
   ]

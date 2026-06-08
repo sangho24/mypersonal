@@ -1,0 +1,82 @@
+[
+  {
+    "id": 0,
+    "name": "프랑스-저가",
+    "rule": {
+      "country": "프랑스",
+      "price_band": "저가"
+    }
+  },
+  {
+    "id": 1,
+    "name": "프랑스-중가",
+    "rule": {
+      "country": "프랑스",
+      "price_band": "중가"
+    }
+  },
+  {
+    "id": 2,
+    "name": "프랑스-고가",
+    "rule": {
+      "country": "프랑스",
+      "price_band": "고가"
+    }
+  },
+  {
+    "id": 3,
+    "name": "미국-중가",
+    "rule": {
+      "country": "미국",
+      "price_band": "중가"
+    }
+  },
+  {
+    "id": 4,
+    "name": "미국-고가",
+    "rule": {
+      "country": "미국",
+      "price_band": "고가"
+    }
+  },
+  {
+    "id": 5,
+    "name": "호주-저가",
+    "rule": {
+      "country": "호주",
+      "price_band": "저가"
+    }
+  },
+  {
+    "id": 6,
+    "name": "호주-중가",
+    "rule": {
+      "country": "호주",
+      "price_band": "중가"
+    }
+  },
+  {
+    "id": 7,
+    "name": "칠레-저가",
+    "rule": {
+      "country": "칠레",
+      "price_band": "저가"
+    }
+  },
+  {
+    "id": 8,
+    "name": "뉴질랜드-중가",
+    "rule": {
+      "country": "뉴질랜드",
+      "price_band": "중가"
+    }
+  },
+  {
+    "id": 9,
+    "name": "기타-고가",
+    "rule": {
+      "country": "기타",
+      "price_band": "고가"
+    }
+  }
+]

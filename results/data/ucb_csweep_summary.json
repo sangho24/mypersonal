@@ -1,0 +1,212 @@
+{
+  "config": {
+    "T": 200,
+    "n_seeds": 20,
+    "base_seed": 0,
+    "c_grid": [
+      0.1,
+      0.25,
+      0.5,
+      0.7,
+      1.0,
+      1.4142135623730951,
+      2.0,
+      3.0,
+      5.0
+    ],
+    "K": 11,
+    "arm_names": [
+      "프랑스",
+      "포르투갈",
+      "이탈리아",
+      "스페인",
+      "칠레",
+      "미국",
+      "호주",
+      "뉴질랜드",
+      "독일",
+      "아르헨티나",
+      "남아프리카"
+    ],
+    "true_rewards": [
+      0.22572131077750987,
+      0.22893976348562245,
+      0.13653433280314053,
+      0.08303174141334563,
+      0.11827449358963055,
+      0.18078358184833473,
+      0.10954219601470383,
+      0.1478301893111497,
+      0.18614273952186158,
+      0.18801766234920697,
+      0.09574228766879665
+    ],
+    "noise_sigma": [
+      0.019304102948283754,
+      0.017180425837036634,
+      0.018459685757139264,
+      0.018573473820256946,
+      0.02011560834910142,
+      0.01930542290408092,
+      0.02196113296292165,
+      0.01644400122253903,
+      0.01490917978499262,
+      0.01725957014529032,
+      0.017452092972001725
+    ],
+    "best_arm_idx": 1,
+    "best_arm_name": "포르투갈",
+    "avg_wine_price_krw": 72000
+  },
+  "ucb_sweep": [
+    {
+      "mean_cum_regret": 3.944122756484979,
+      "std_cum_regret": 0.20166574852942445,
+      "min_cum_regret": 3.5247885248314064,
+      "max_cum_regret": 4.230073808295546,
+      "mean_overpay_krw": 283976.83846691845,
+      "c": 0.1,
+      "policy_name": "ucb1_c0.1000",
+      "n_seeds": 20,
+      "T": 200
+    },
+    {
+      "mean_cum_regret": 8.66491277122934,
+      "std_cum_regret": 0.21075018037495272,
+      "min_cum_regret": 8.263596114619872,
+      "max_cum_regret": 9.076742399544951,
+      "mean_overpay_krw": 623873.7195285124,
+      "c": 0.25,
+      "policy_name": "ucb1_c0.2500",
+      "n_seeds": 20,
+      "T": 200
+    },
+    {
+      "mean_cum_regret": 11.613667935717665,
+      "std_cum_regret": 0.0905832945365488,
+      "min_cum_regret": 11.455599950906317,
+      "max_cum_regret": 11.789305179328323,
+      "mean_overpay_krw": 836184.0913716719,
+      "c": 0.5,
+      "policy_name": "ucb1_c0.5000",
+      "n_seeds": 20,
+      "T": 200
+    },
+    {
+      "mean_cum_regret": 12.491123598753527,
+      "std_cum_regret": 0.07602452650044463,
+      "min_cum_regret": 12.322800831805177,
+      "max_cum_regret": 12.587451527573341,
+      "mean_overpay_krw": 899360.8991102539,
+      "c": 0.7,
+      "policy_name": "ucb1_c0.7000",
+      "n_seeds": 20,
+      "T": 200
+    },
+    {
+      "mean_cum_regret": 13.175133594215415,
+      "std_cum_regret": 0.07028245531592547,
+      "min_cum_regret": 13.055877005800491,
+      "max_cum_regret": 13.334809292101644,
+      "mean_overpay_krw": 948609.6187835099,
+      "c": 1.0,
+      "policy_name": "ucb1_c1.0000",
+      "n_seeds": 20,
+      "T": 200
+    },
+    {
+      "mean_cum_regret": 13.651849391808616,
+      "std_cum_regret": 0.05810454763025714,
+      "min_cum_regret": 13.558608435640279,
+      "max_cum_regret": 13.759674157389336,
+      "mean_overpay_krw": 982933.1562102203,
+      "c": 1.4142135623730951,
+      "policy_name": "ucb1_c1.4142",
+      "n_seeds": 20,
+      "T": 200
+    },
+    {
+      "mean_cum_regret": 14.022146096499984,
+      "std_cum_regret": 0.046942837256470436,
+      "min_cum_regret": 13.980839193088004,
+      "max_cum_regret": 14.08382607940828,
+      "mean_overpay_krw": 1009594.5189479989,
+      "c": 2.0,
+      "policy_name": "ucb1_c2.0000",
+      "n_seeds": 20,
+      "T": 200
+    },
+    {
+      "mean_cum_regret": 14.277236037102558,
+      "std_cum_regret": 0.04841798554014253,
+      "min_cum_regret": 14.203223646879197,
+      "max_cum_regret": 14.34591321624336,
+      "mean_overpay_krw": 1027960.9946713841,
+      "c": 3.0,
+      "policy_name": "ucb1_c3.0000",
+      "n_seeds": 20,
+      "T": 200
+    },
+    {
+      "mean_cum_regret": 14.522129268949374,
+      "std_cum_regret": 0.022560124416553713,
+      "min_cum_regret": 14.456578486139353,
+      "max_cum_regret": 14.535053952473858,
+      "mean_overpay_krw": 1045593.307364355,
+      "c": 5.0,
+      "policy_name": "ucb1_c5.0000",
+      "n_seeds": 20,
+      "T": 200
+    }
+  ],
+  "baselines": [
+    {
+      "mean_cum_regret": 2.310481028308737,
+      "std_cum_regret": 1.844667287659488,
+      "min_cum_regret": 1.4482755547117392,
+      "max_cum_regret": 9.616902745921138,
+      "mean_overpay_krw": 166354.63403822907,
+      "policy_name": "epsilon_greedy_0.1",
+      "n_seeds": 20,
+      "T": 200
+    },
+    {
+      "mean_cum_regret": 2.386041873216766,
+      "std_cum_regret": 0.20165193880184445,
+      "min_cum_regret": 1.9614370481053889,
+      "max_cum_regret": 2.7318666501397106,
+      "mean_overpay_krw": 171795.01487160716,
+      "policy_name": "thompson_gauss",
+      "n_seeds": 20,
+      "T": 200
+    },
+    {
+      "mean_cum_regret": 15.024208143118363,
+      "std_cum_regret": 0.6248592179142426,
+      "min_cum_regret": 14.1057449363708,
+      "max_cum_regret": 16.244873070840356,
+      "mean_overpay_krw": 1081742.9863045223,
+      "policy_name": "random",
+      "n_seeds": 20,
+      "T": 200
+    },
+    {
+      "mean_cum_regret": 0.0,
+      "std_cum_regret": 0.0,
+      "min_cum_regret": 0.0,
+      "max_cum_regret": 0.0,
+      "mean_overpay_krw": 0.0,
+      "policy_name": "oracle",
+      "n_seeds": 20,
+      "T": 200
+    }
+  ],
+  "optimal": {
+    "c_star": 0.1,
+    "mean_cum_regret_at_c_star": 3.944122756484979,
+    "overpay_krw_at_c_star": 283976.83846691845,
+    "c_sqrt2_mean_cum_regret": 13.651849391808616,
+    "improvement_vs_sqrt2": 9.707726635323638,
+    "improvement_pct_vs_sqrt2": 71.1092421012824
+  }
+}

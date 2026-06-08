@@ -1,0 +1,21 @@
+{
+  "france_sparkling": {
+    "hs_code": 220410,
+    "wholesale_krw_per_bottle": 50473.6,
+    "retail_median_krw": 141000.0,
+    "markup": 2.794,
+    "wholesale_rank_among_sparkling": 1,
+    "n_countries_in_sparkling_market": 11
+  },
+  "france_still": {
+    "hs_code": 220421,
+    "wholesale_krw_per_bottle": 25464.7,
+    "markup": 5.537
+  },
+  "south_africa_sparkling": {
+    "hs_code": 220410,
+    "wholesale_krw_per_bottle": 5895.9,
+    "markup": 11.364
+  },
+  "interpretation": "프랑스 샴페인 (HS 220410) 도매가가 11개국 스파클링 시장에서 가장 높고, markup 은 2.82× 수준으로 가장 낮음. 반대로 남아프리카 스파클링은 도매가가 1/8 수준임에도 소매가는 비슷해 markup 11.5× — 정보 비대칭이 큰 구간일수록 검증 비용이 높아 retail premium 이 확대된다는 Akerlof lemon-market 메커니즘의 정량 증거."
+}

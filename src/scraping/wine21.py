@@ -34,8 +34,25 @@ MAKERSNOTE2 = f"{BASE}/13_search/proc/load_wine_view_makersnote_list2.php"
 DETAIL_URL = f"{BASE}/13_search/wine_view.html?Idx={{idx}}"
 RAW_DIR = Path("data/raw/wine21")
 
-# 평점순 — rating_avg / rating_count 신호가 있는 와인부터 수집
+# 평점순 — phase 01 프로토타입용. phase 02 본수집은 BROAD_SORT 사용 (ADR-008)
 DEFAULT_SORT = "POINT2|DESC"
+# 최신등록순 — 평점순 편중(무명 와인)을 피해 폭넓게 수집
+BROAD_SORT = "a.CREATE_DATE|DESC"
+
+# wine21 WINE_NATION 필터 코드 (list 페이지 onCheckFilter 에서 확인)
+NATION_CODES: dict[str, str] = {
+    "프랑스": "P09000000",
+    "이탈리아": "P15000000",
+    "스페인": "P24000000",
+    "포르투갈": "P19000000",
+    "독일": "P11000000",
+    "미국": "P28000000",
+    "뉴질랜드": "P18000000",
+    "호주": "P02000000",
+    "칠레": "P08000000",
+    "아르헨티나": "P01000000",
+    "남아프리카 공화국": "P23000000",
+}
 
 HEADERS: dict[str, str | bytes] = {
     "User-Agent": (
@@ -165,19 +182,28 @@ def parse_detail(html: str, url: str) -> WineRecord:
 
 
 def collect_detail_urls(
-    start_page: int = 1, limit: int = 50, sort: str = DEFAULT_SORT
+    start_page: int = 1,
+    limit: int = 50,
+    sort: str = DEFAULT_SORT,
+    nation_code: str | None = None,
 ) -> list[str]:
     """ajax_wine_list.php 에 POST 페이지네이션 → 상세 URL 목록.
 
     엔드포인트는 `filter`/`option` JSON 파라미터를 받고(GET·단순 파라미터는 500),
     응답 HTML fragment 안의 와인 ID는 `goWineViewWithParam(<id>)` 형태로 노출된다.
     (카드 1개당 ID가 여러 번 나오므로 등장 순서 유지하며 dedupe.)
+
+    nation_code 가 주어지면 `WINE_NATION` 필터를 걸어 해당 국가만 수집한다.
     """
     urls: list[str] = []
     page = start_page
     while len(urls) < limit:
         option = {"page": page, "pageSize": 10, "sort": sort}
-        flt = {"KEY_WORD": "", "NO_PRICE": False}
+        flt: dict = {"KEY_WORD": "", "NO_PRICE": False}
+        if nation_code:
+            flt["WINE_NATION"] = {
+                nation_code: {"type": "WINE_NATION", "key": nation_code, "desc": ""}
+            }
         resp = requests.post(
             LIST_AJAX,
             data={"filter": json.dumps(flt), "option": json.dumps(option)},
@@ -247,47 +273,45 @@ def fetch_notes(wine_idx: str, *, sleep_sec: float = 1.0) -> tuple[str | None, i
     return parse_makersnote(note_html), parse_tastingnote_count(count_html)
 
 
-def fetch_catalog(limit: int = 50, sort: str = DEFAULT_SORT) -> list[WineRecord]:
-    """리스트→상세 크롤 + 노트/평점 AJAX 보강 후 raw HTML·records.jsonl·failures.jsonl 저장."""
-    day = datetime.now().strftime("%Y%m%d")
-    out_dir = RAW_DIR / day
-    out_dir.mkdir(parents=True, exist_ok=True)
+def _process_url(
+    url: str,
+    out_dir: Path,
+    records: list[WineRecord],
+    failures: list[dict],
+    *,
+    mode: str = "strict",
+) -> None:
+    """상세 URL 1개 → HTML 저장 + parse + AJAX 보강 + 검증 → records/failures 에 append."""
+    html = fetch_html(url)
+    if not html:
+        failures.append({"url": url, "reason": "fetch_failed"})
+        return
+    idx = _wine_idx(url) or str(len(records))
+    (out_dir / f"{idx}.html").write_text(html, encoding="utf-8")
+    try:
+        rec = parse_detail(html, url)
+    except Exception as exc:  # 파싱 실패도 조용히 버리지 않음
+        failures.append({"url": url, "reason": f"parse_error: {exc}"})
+        return
+    if not rec.name:
+        failures.append({"url": url, "reason": "empty_name"})
+        return
+    # AJAX 보강 — 메이커스노트가 있으면 정적 아로마 baseline 을 덮어씀
+    makersnote, rating_count = fetch_notes(idx)
+    if makersnote:
+        rec.tasting_note = makersnote
+    rec.rating_count = rating_count
 
-    urls = collect_detail_urls(limit=limit, sort=sort)
-    records: list[WineRecord] = []
-    failures: list[dict] = []
+    # 테이블 계약 강제 — 필수 필드가 빠진 레코드는 records.jsonl 에 넣지 않고
+    # failures.jsonl 로 보낸다. (조용히 버리지 않음)
+    validation_errors = validate_record(rec.to_dict(), len(records), mode=mode)
+    if validation_errors:
+        failures.append({"url": url, "reason": "validation_failed", "errors": validation_errors})
+        return
+    records.append(rec)
 
-    for url in urls:
-        html = fetch_html(url)
-        if not html:
-            failures.append({"url": url, "reason": "fetch_failed"})
-            continue
-        idx = _wine_idx(url) or str(len(records))
-        (out_dir / f"{idx}.html").write_text(html, encoding="utf-8")
-        try:
-            rec = parse_detail(html, url)
-        except Exception as exc:  # 파싱 실패도 조용히 버리지 않음
-            failures.append({"url": url, "reason": f"parse_error: {exc}"})
-            continue
-        if not rec.name:
-            failures.append({"url": url, "reason": "empty_name"})
-            continue
-        # AJAX 보강 — 메이커스노트가 있으면 정적 아로마 baseline 을 덮어씀
-        makersnote, rating_count = fetch_notes(idx)
-        if makersnote:
-            rec.tasting_note = makersnote
-        rec.rating_count = rating_count
 
-        # 테이블 계약 강제 — 필수 필드가 빠진 레코드는 records.jsonl 에 넣지 않고
-        # failures.jsonl 로 보낸다. (조용히 버리지 않음)
-        validation_errors = validate_record(rec.to_dict(), len(records))
-        if validation_errors:
-            failures.append(
-                {"url": url, "reason": "validation_failed", "errors": validation_errors}
-            )
-            continue
-        records.append(rec)
-
+def _dump(out_dir: Path, records: list[WineRecord], failures: list[dict]) -> None:
     with (out_dir / "records.jsonl").open("w", encoding="utf-8") as f:
         for rec in records:
             f.write(json.dumps(rec.to_dict(), ensure_ascii=False) + "\n")
@@ -295,6 +319,61 @@ def fetch_catalog(limit: int = 50, sort: str = DEFAULT_SORT) -> list[WineRecord]
         for fail in failures:
             f.write(json.dumps(fail, ensure_ascii=False) + "\n")
 
+
+def fetch_catalog(limit: int = 50, sort: str = DEFAULT_SORT) -> list[WineRecord]:
+    """리스트→상세 크롤 + 노트/평점 AJAX 보강 후 raw HTML·records.jsonl·failures.jsonl 저장.
+
+    phase 01 프로토타입용 (단일 정렬, 작은 limit).
+    """
+    day = datetime.now().strftime("%Y%m%d")
+    out_dir = RAW_DIR / day
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    records: list[WineRecord] = []
+    failures: list[dict] = []
+    for url in collect_detail_urls(limit=limit, sort=sort):
+        _process_url(url, out_dir, records, failures)
+    _dump(out_dir, records, failures)
+    return records
+
+
+def collect_by_nation(nation_code: str, limit: int, sort: str = BROAD_SORT) -> list[str]:
+    """단일 국가(WINE_NATION 필터)에서 상세 URL 을 limit 개 수집."""
+    return collect_detail_urls(limit=limit, sort=sort, nation_code=nation_code)
+
+
+def fetch_broad_catalog(
+    per_nation: int = 400, nations: dict[str, str] | None = None
+) -> list[WineRecord]:
+    """phase 02 본수집 — 주요 국가별로 per_nation 병씩 폭넓게 수집 (ADR-008).
+
+    평점순이 아니라 BROAD_SORT(최신등록순)로 국가별 다양성을 확보한다.
+    국가별 URL 을 먼저 다 모은 뒤 상세를 크롤한다.
+    """
+    day = datetime.now().strftime("%Y%m%d")
+    out_dir = RAW_DIR / day
+    out_dir.mkdir(parents=True, exist_ok=True)
+    nations = nations or NATION_CODES
+
+    all_urls: list[str] = []
+    for name, code in nations.items():
+        urls = collect_by_nation(code, limit=per_nation)
+        print(f"  [{name}] URL {len(urls)}개 수집")
+        all_urls.extend(urls)
+        time.sleep(1.5)
+    # 국가 간 중복 제거 (한 와인이 여러 국가 코드에 안 잡히지만 방어적으로)
+    all_urls = list(dict.fromkeys(all_urls))
+    print(f"총 {len(all_urls)}개 상세 URL → 크롤 시작")
+
+    records: list[WineRecord] = []
+    failures: list[dict] = []
+    for i, url in enumerate(all_urls, 1):
+        _process_url(url, out_dir, records, failures, mode="broad")
+        if i % 100 == 0:
+            print(f"  진행 {i}/{len(all_urls)} (records {len(records)}, failures {len(failures)})")
+            _dump(out_dir, records, failures)  # 중간 저장 — 긴 배치 중단 대비
+    _dump(out_dir, records, failures)
+    print(f"완료 — records {len(records)}, failures {len(failures)}")
     return records
 
 
@@ -314,4 +393,11 @@ def smoke_test() -> None:
 
 
 if __name__ == "__main__":
-    smoke_test()
+    import sys
+
+    if len(sys.argv) > 1 and sys.argv[1] == "broad":
+        # phase 02 step1 본수집 — python -m src.scraping.wine21 broad [per_nation]
+        per_nation = int(sys.argv[2]) if len(sys.argv) > 2 else 400
+        fetch_broad_catalog(per_nation=per_nation)
+    else:
+        smoke_test()

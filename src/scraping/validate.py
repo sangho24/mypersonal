@@ -11,18 +11,19 @@ from pathlib import Path
 
 from src.scraping.schema import WineRecord
 
-# 결측을 허용하지 않는 필드 (사용자 결정: tasting_note·rating 도 필수)
-REQUIRED_FIELDS = (
-    "name",
-    "region",
-    "varietal",
-    "price_krw",
-    "rating_avg",
-    "rating_count",
-    "tasting_note",
-    "source",
-    "source_url",
+# 결측을 허용하지 않는 필드.
+# strict = phase 01 평점순 수집용 (rating 필수). broad = phase 02 본수집용 (rating 결측 허용).
+# 본수집은 wine21 신규등록 와인이 평점이 없는 게 정상 — 분석 단계에서 결측 처리.
+REQUIRED_FIELDS_STRICT = (
+    "name", "region", "varietal", "price_krw",
+    "rating_avg", "rating_count", "tasting_note",
+    "source", "source_url",
 )
+REQUIRED_FIELDS_BROAD = (
+    "name", "region", "varietal", "price_krw",
+    "source", "source_url",
+)
+REQUIRED_FIELDS = REQUIRED_FIELDS_STRICT  # 기존 호환
 # 결측 허용 — 와인에 따라 "NA" 빈티지가 정상적으로 존재
 OPTIONAL_FIELDS = ("vintage", "scraped_at")
 
@@ -41,8 +42,12 @@ _TYPES = {
 }
 
 
-def validate_record(rec: dict, idx: int) -> list[str]:
-    """레코드 1개 검증 → 오류 메시지 리스트 (빈 리스트면 통과)."""
+def validate_record(rec: dict, idx: int, mode: str = "strict") -> list[str]:
+    """레코드 1개 검증 → 오류 메시지 리스트 (빈 리스트면 통과).
+
+    mode='strict'  → phase 01 평점순 수집용 (rating·tasting_note 도 필수)
+    mode='broad'   → phase 02 본수집용 (신규등록 와인은 평점 없는 게 정상)
+    """
     errors: list[str] = []
     schema_keys = {f.name for f in fields(WineRecord)}
 
@@ -53,7 +58,8 @@ def validate_record(rec: dict, idx: int) -> list[str]:
     if extra_keys:
         errors.append(f"[{idx}] 정의되지 않은 키: {sorted(extra_keys)}")
 
-    for field_name in REQUIRED_FIELDS:
+    required = REQUIRED_FIELDS_BROAD if mode == "broad" else REQUIRED_FIELDS_STRICT
+    for field_name in required:
         val = rec.get(field_name)
         if val is None or (isinstance(val, str) and not val.strip()):
             errors.append(f"[{idx}] 필수 필드 결측: {field_name}")

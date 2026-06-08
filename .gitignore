@@ -6,19 +6,8 @@ __pycache__/
 venv/
 .ipynb_checkpoints/
 
-# Data — 원본은 재현 가능하므로 git 제외
+# Raw data — Apple Health export 등 외부 raw (2GB+, 외부에서 별도 export)
 data/raw/
-data/processed/
-data/personas/
-*.csv
-*.parquet
-*.jsonl
-
-# Results — figure는 보고서 산출물만 골라서 force-add
-results/figures/
-results/logs/
-*.png
-*.pdf
 
 # Secrets
 .env
@@ -28,3 +17,11 @@ results/logs/
 .DS_Store
 .vscode/
 .idea/
+
+# Build artifacts
+dist/
+build/
+*.egg
+
+# Workflow scratch
+results/logs/

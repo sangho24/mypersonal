@@ -1,10 +1,10 @@
 {
   "phase": "02-data-collection",
-  "goal": "본 수집(1,500 ~ 3,000병) + Nemotron-Personas-Korea 샘플링 + 두 데이터셋의 정제 파이프라인 완성.",
+  "goal": "wine21 폭넓은 본수집(3,000~5,000병, 실가격) + X-Wines 속성 프로파일 정제 + Nemotron 페르소나 로딩. 세 출처를 통합 wine_catalog/personas 테이블로 정제. (ADR-006/007/008)",
   "steps": [
-    {"id": "step1", "title": "본 수집 실행 + 정제 파이프라인", "status": "pending"},
-    {"id": "step2", "title": "카테고리 라벨링 및 MAB arms 확정", "status": "pending"},
-    {"id": "step3", "title": "Nemotron-Personas-Korea 로딩 및 샘플링", "status": "pending"},
-    {"id": "step4", "title": "기초 EDA — 가격/평점 관계, 페르소나 demographic 분포", "status": "pending"}
+    {"id": "step1", "title": "wine21 폭넓은 본수집 (전 국가·전 카테고리, 실가격)", "status": "pending"},
+    {"id": "step2", "title": "X-Wines 품종 프로파일 정제 + wine_catalog 조인 + arm 확정", "status": "pending"},
+    {"id": "step3", "title": "Nemotron 페르소나 로딩 + X-Wines 평점 매트릭스 준비", "status": "pending"},
+    {"id": "step4", "title": "통합 EDA — arm 분포·가격·body, 페르소나 demographic, 평점 분포", "status": "pending"}
   ]
 }
