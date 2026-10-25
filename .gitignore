@@ -25,3 +25,13 @@ build/
 
 # Workflow scratch
 results/logs/
+
+# 개인 데이터(건강·위치 파생)는 공개 저장소에 올리지 않는다
+data/processed/personal/
+results/health/
+results/health_v2/
+results/personal/**/*.csv
+results/personal/**/*.json
+results/personal/**/*.parquet
+results/personal/*.csv
+results/personal/*.json
